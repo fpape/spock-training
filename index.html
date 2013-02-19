@@ -269,16 +269,20 @@ stack.isEmpty()</code>
 }</code>
             </pre>
         </div>
+    </section>
+    <section>
+        <h2>where where where...</h2>
+
         <div>
             <pre>
-                <code class="groovy">def test(String name, int age, String gender) {
+                <code class="groovy">def "test db"(String name, int age, String gender) {
   given:
   when:
   then:
   where:
-  [name, age, gender] = sql.execute("
-      select name, age, sex from customer
-    ")
+  [name, age, gender] = sql.execute("""
+       select name, age, sex from customer
+     """)
 }</code>
             </pre>
         </div>
@@ -519,9 +523,6 @@ stack.isEmpty()</code>
             } },
             { src:'plugin/markdown/markdown.js', condition:function () {
                 return !!document.querySelector('[data-markdown]');
-            } },
-            { src:'plugin/highlight/languages/groovy.js', async:true, condition:function () {
-                return !!document.body.classList;
             } },
             { src:'plugin/highlight/highlight.js', async:true, callback:function () {
                 hljs.initHighlightingOnLoad();
