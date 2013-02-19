@@ -294,197 +294,151 @@ stack.isEmpty()</code>
         <h2>Spock mocking<br>
         </h2>
     </section>
+<!--
     <section>
-        <h2>Specification</h2>
+        <h2>Interactions</h2>
         <div>
 <pre>
-    <code class="groovy">class MyFirstSpecification extends Specification {
-  // fields
-  // fixture methods
-  // feature methods
-  // helper methods
-}</code>
-</pre>
-        </div>
-        <div>
-            <ul>
-                <li>if using maven: Rename MyFirstSpecification to MyFirstTest</li>
-            </ul>
-        </div>
-    </section>
-    <section>
-        <h2>Fields</h2>
-        <div>
-<pre>
-    <code class="groovy">def obj = new ClassUnderSpecification()
-@Shared
-def res = new VeryExpensiveResource()</code>
-</pre>
-        </div>
-        <div>
-            <ul>
-                <li>fields are initialized before each feature method</li>
-                <li>shared fiels are initialized once for all feature methods</li>
-            </ul>
-        </div>
-    </section>
-    <section>
-        <h2>Fixture Methods</h2>
-        <div>
-<pre>
-    <code class="groovy">def setup() {}          // run before every feature method
-def cleanup() {}        // run after every feature method
-def setupSpec() {}     // run before the first feature method
-def cleanupSpec() {}   // run after the last feature method</code>
-</pre>
-        </div>
-        <div>
-            <ul>
-                <li>responsible for setting up and cleaning up the environment </li>
-                <li>setupSpec() and cleanupSpec() methods may not reference instance fields</li>
-            </ul>
-        </div>
-    </section>
-    <section>
-        <h2>Feature Methods</h2>
-        <div>
-<pre>
-    <code class="groovy">def "pushing an element on the stack"() {
-  // blocks go here
-}</code>
-</pre>
-        </div>
-        <div>
-            <ul>
-                <li>responsible for setting up and cleaning up the environment </li>
-                <li>setupSpec() and cleanupSpec() methods may not reference instance fields</li>
-            </ul>
-        </div>
-    </section>
-    <section>
-        <h2>blocks</h2>
-        <div>
-            <img src="lib/img/Blocks2Phases.png">
-        </div>
-        <div>
-            <ul>
-                <li>setup</li>
-                <li>given</li>
-                <li>when</li>
-                <li>then</li>
-                <li>cleanup</li>
-            </ul>
-        </div>
-    </section>
-    <section>
-        <h2>basic usage</h2>
-        <div>
-            <pre>
-                <code class="groovy">def "pushing an element on the stack"() {
-  given:
-  def stack = new Stack()
-  def elem = "push me"
+    <code class="groovy">def "events are published to all subscribers"() {
+  def subscriber1 = Mock(Subscriber)
+  def subscriber2 = Mock(Subscriber)
+  def publisher = new Publisher()
+  publisher.add(subscriber1)
+  publisher.add(subscriber2)
 
   when:
-  stack.push(elem)
+  publisher.fire("event")
 
   then:
-  !stack.empty
-  stack.size() == 1
-  stack.peek() == elem
+  notThrown(Exception)
+  1 * subscriber1.receive("event")
+  1 * subscriber2.receive("event")
 }</code>
-            </pre>
+</pre>
+        </div>
+</section>
+-->
+    <section>
+        <h2>Creating mocks</h2>
+        <div>
+<pre>
+    <code class="groovy">// "dynamic" style
+def subscriber = Mock(Subscriber)
+// "static" style
+Subscriber subscriber = Mock()</code>
+</pre>
         </div>
     </section>
-
     <section>
-        <h2>expect block</h2>
+        <h2>Global vs. local interactions</h2>
         <div>
-            <pre>
-                <code class="groovy">def "test math max"() {
-  when:
-  def x = Math.max(1, 2)
-
-  then:
-  x == 2
-}</code>
-            </pre>
-        </div>
-        <div>
-            <pre>
-                <code class="groovy">def "test math max"() {
-  expect:
-  Math.max(1, 2) == 2
-}</code>
-            </pre>
+<pre>
+    <code class="groovy">
+given:
+def subscriber = Mock(Subscriber)
+// global interactions
+subscriber.isAlive() >> true
+when:
+publisher.send(event)
+then:
+// local interactions
+1 * subscriber.receive(event)</code>
+</pre>
         </div>
     </section>
-
     <section>
-        <h2>then then then...</h2>
-        <h3>conditions</h3>
-
+        <h2>Optional vs. required interactions</h2>
         <div>
+            <pre>
+                <code class="groovy">then:
+// optional interactions
+subscriber.isAlive() >> true
+// required interactions
+1 * subscriber.receive(event)</code>
+            </pre>
+            <h3>Optional interactions</h3>
             <ul>
-                <li>describe expected state cfr junit assertions</li>
-                <li>each line should contain boolean expression (according to groovy truth)</li>
+                <li>don't have a cardinality</li>
+                <li>must have a return value</li>
+            </ul>
+            <h3>Required interactions</h3>
+            <ul>
+                <li>must have a cardinality</li>
+                <li>may have a return value</li>
             </ul>
         </div>
+    </section>
+    <section>
+        <h2>Cardinalities</h2>
         <div>
             <pre>
-                <code class="groovy">
-then:
-!stack.empty
-stack.size() == 1
-stack.peek() == elem
-                </code>
+                <code class="groovy">// exactly n times
+n * subscriber.receive(event)
+// at least n times
+(n.._) * subscriber.receive(event)
+// at most n times
+(_..n) * subscriber.receive(event)</code>
             </pre>
         </div>
     </section>
-
     <section>
-        <h2>then then then...</h2>
-        <h3>exceptions</h3>
-
-        <div>
-            <ul>
-                <li>describe that a when block should throw an exception</li>
-                <li>each line should contain boolean expression (according to groovy truth)</li>
-            </ul>
-        </div>
+        <h2>Argument constraints</h2>
         <div>
             <pre>
-                <code class="groovy">when:
-stack.pop()
+                <code class="groovy">// no arguments
+subscriber.receive()
+// any argument
+subscriber.receive(_)
+// any non-null argument
+subscriber.receive(!null)
+// any argument equal to event
+subscriber.receive(event)
+// any argument not equal to event
+subscriber.receive(!event)
+// any argument that is-a Message (null is not allowed)
+subscriber.receive(_ as Message)
+// custom constraint
+subscriber.receive( { it.priority >= 5 } )
 
-then:
-notThrown(SomeFancyOtherExcpetion)
-def e = thrown(EmptyStackException)
-e.cause == null
-stack.isEmpty()</code>
+// For methods that take multiple arguments:
+// any argument
+mock.foo(_, _, _)
+// same as above
+mock.foo(*_)
+// any first arg, second arg non-null, third arg custom
+mock.foo(_, !null, { it ==~ /a*b/ })</code>
             </pre>
         </div>
     </section>
-
     <section>
-        <h2>where where where...</h2>
-
-        <div>
-            <ul>
-                <li>describe that a when block should throw an exception</li>
-                <li>each line should contain boolean expression (according to groovy truth)</li>
-            </ul>
-        </div>
+        <h2>return values</h2>
         <div>
             <pre>
-                <code class="groovy">when:
-stack.pop()
-
+                <code class="groovy">// single return value, repeated indefinitely
+subscriber.isAlive() >> true
+// multiple return values (anything that Groovy can iterate over),
+// last one repeated indefinitely
+subscriber.isAlive() >>> [true, false, true]
+ // custom action
+subscriber.isAlive() >> { throw new TimeoutException() }
+// depending on arguments
+subscriber.isEventSupported(_) >> { args[0] instanceof ... }</code>
+            </pre>
+        </div>
+    </section>
+    <section>
+        <h2>interactions the next level</h2>
+        <div>
+            <pre>
+                <code class="groovy">// no (more) method call on any mock
+0 * _._
+// interaction ordering
 then:
-notThrown(SomeFancyOtherExcpetion)
-def e = thrown(EmptyStackException)
-e.cause == null
-stack.isEmpty()</code>
+1 * subscriber.isAlive() >> true
+then:
+1 * subscriber.isEventSupported(_) >> true
+then:
+1 * subscriber.receive(event)</code>
             </pre>
         </div>
     </section>
