@@ -81,14 +81,12 @@
         <h2>Specification</h2>
         <div>
 <pre>
-    <code>
-class MyFirstSpecification extends Specification {
+    <code class="groovy">class MyFirstSpecification extends Specification {
   // fields
   // fixture methods
   // feature methods
   // helper methods
-}
-    </code>
+}</code>
 </pre>
         </div>
         <div>
@@ -101,11 +99,9 @@ class MyFirstSpecification extends Specification {
         <h2>Fields</h2>
         <div>
 <pre>
-    <code>
-def obj = new ClassUnderSpecification()
+    <code class="groovy">def obj = new ClassUnderSpecification()
 @Shared
-def res = new VeryExpensiveResource()
-    </code>
+def res = new VeryExpensiveResource()</code>
 </pre>
         </div>
         <div>
@@ -119,12 +115,10 @@ def res = new VeryExpensiveResource()
         <h2>Fixture Methods</h2>
         <div>
 <pre>
-    <code>
-def setup() {}          // run before every feature method
+    <code class="groovy">def setup() {}          // run before every feature method
 def cleanup() {}        // run after every feature method
 def setupSpec() {}     // run before the first feature method
-def cleanupSpec() {}   // run after the last feature method
-    </code>
+def cleanupSpec() {}   // run after the last feature method</code>
 </pre>
         </div>
         <div>
@@ -138,11 +132,9 @@ def cleanupSpec() {}   // run after the last feature method
         <h2>Feature Methods</h2>
         <div>
 <pre>
-    <code>
-def "pushing an element on the stack"() {
+    <code class="groovy">def "pushing an element on the stack"() {
   // blocks go here
-}
-    </code>
+}</code>
 </pre>
         </div>
         <div>
@@ -171,8 +163,7 @@ def "pushing an element on the stack"() {
         <h2>basic usage</h2>
         <div>
             <pre>
-                <code>
-def "pushing an element on the stack"() {
+                <code class="groovy">def "pushing an element on the stack"() {
   given:
   def stack = new Stack()
   def elem = "push me"
@@ -184,8 +175,7 @@ def "pushing an element on the stack"() {
   !stack.empty
   stack.size() == 1
   stack.peek() == elem
-}
-                </code>
+}</code>
             </pre>
         </div>
     </section>
@@ -194,31 +184,27 @@ def "pushing an element on the stack"() {
         <h2>expect block</h2>
         <div>
             <pre>
-                <code>
-def "test math max"() {
+                <code class="groovy">def "test math max"() {
   when:
   def x = Math.max(1, 2)
 
   then:
   x == 2
-}
-                </code>
+}</code>
             </pre>
         </div>
         <div>
             <pre>
-                <code>
-def "test math max"() {
+                <code class="groovy">def "test math max"() {
   expect:
   Math.max(1, 2) == 2
-}
-                </code>
+}</code>
             </pre>
         </div>
     </section>
 
     <section>
-        <h2>when when when...</h2>
+        <h2>then then then...</h2>
         <h3>conditions</h3>
 
         <div>
@@ -229,18 +215,16 @@ def "test math max"() {
         </div>
         <div>
             <pre>
-                <code>
-when:
+                <code class="groovy">then:
 !stack.empty
 stack.size() == 1
-stack.peek() == elem
-                </code>
+stack.peek() == elem</code>
             </pre>
         </div>
     </section>
 
     <section>
-        <h2>when when when...</h2>
+        <h2>then then then...</h2>
         <h3>exceptions</h3>
 
         <div>
@@ -251,640 +235,256 @@ stack.peek() == elem
         </div>
         <div>
             <pre>
-                <code>
-when:
+                <code class="groovy">when:
 stack.pop()
 
 then:
 notThrown(SomeFancyOtherExcpetion)
 def e = thrown(EmptyStackException)
 e.cause == null
-stack.isEmpty()
-                </code>
+stack.isEmpty()</code>
             </pre>
         </div>
     </section>
-<!--
+
     <section>
-        <h2>USE SASS</h2>
+        <h2>where where where...</h2>
 
         <div>
-            <br>
-        </div>
-        <div>
-            <br>
-        </div>
-        <div>
             <ul>
-                <li>Nesting</li>
-                <li>Variables</li>
-                <li>Mixins</li>
-                <li>...</li>
+                <li>used for datadriven tests</li>
             </ul>
         </div>
         <div>
-            <br>
-        </div>
-    </section>
-    <section>
-        <h2>SASS - VARIABLES</h2>
+            <pre>
+                <code class="groovy">def "test math max"() {
+  expect:
+  Math.max(v1, v2) == ev
 
-        <div>
-    <pre>
-                    <code>
-$blue: #3bbfce;
-
-.content-navigation {
-    border-color: $blue;
-    color: darken($blue, 9%);
-}
-                    </code>
-                </pre>
-<pre>
-                <code>
-.content-navigation {
-    border-color: #3bbfce;
-    color: #2b9eab;
-}
-                </code>
+  where:
+  v1 | v2 | ev
+  1  | 1  | 1
+  1  | 2  | 2
+  2  | 1  | 1
+}</code>
             </pre>
         </div>
-
-
-    </section>
-    <section>
-        <h2>SASS - NESTING</h2>
-
         <div>
-<pre>
-                <code>
-#navbar {
-    width: 80%;
-
-    ul {
-        list-style-type: none;
-    }
-}
-                </code>
+            <pre>
+                <code class="groovy">def test(String name, int age, String gender) {
+  given:
+  when:
+  then:
+  where:
+  [name, age, gender] = sql.execute("
+      select name, age, sex from customer
+    ")
+}</code>
             </pre>
-<pre>
-            <code>
-#navbar {
-    width: 80%;
-}
-
-#navbar ul {
-    list-style-type: none;
-}
-            </code>
-        </pre>
         </div>
+    </section>
+</section>
 
+<section>
+    <section>
+        <h2>Spock mocking<br>
+        </h2>
     </section>
     <section>
-        <h2>SASS - MIXINS</h2>
-
-        <div>
-    <pre>
-            <code>
-$default_rounded_amount: 5px
-
-@mixin round-corners($amount: $default_rounded_amount) {
-    border-radius: $amount;
-    -moz-border-radius: $amount;
-    -webkit-border-radius: $amount;
-}
-
-.rounded-button {
-    @include round-corners(10px);
-}
-            </code>
-        </pre>
-
-    <pre>
-        <code>
-.rounded-button {
-    border-radius: 10px;
-    -moz-border-radius: 10px;
-    -webkit-border-radius: 10px;
-}
-        </code>
-    </pre>
-        </div>
-
-
-    </section>
-    <section>
-        <h2>SASS - imports</h2>
-
+        <h2>Specification</h2>
         <div>
 <pre>
-        <code>
-/* _rounded.scss */
-
-.hello {
-    color: $mainColor;
-}
-
-        </code>
-    </pre>
-        </div>
-        <code>
-            <div>
-    <pre>
-    <code>
-/* all.scss */
-$mainColor: red;
-
-@import "rounded"
-    </code>
+    <code class="groovy">class MyFirstSpecification extends Specification {
+  // fields
+  // fixture methods
+  // feature methods
+  // helper methods
+}</code>
 </pre>
-            </div>
-            <div>
-    <pre>
-<code>
-/* all.css */
-
-.hello {
-    color: $mainColor;
-}
-</code>
+        </div>
+        <div>
+            <ul>
+                <li>if using maven: Rename MyFirstSpecification to MyFirstTest</li>
+            </ul>
+        </div>
+    </section>
+    <section>
+        <h2>Fields</h2>
+        <div>
+<pre>
+    <code class="groovy">def obj = new ClassUnderSpecification()
+@Shared
+def res = new VeryExpensiveResource()</code>
 </pre>
-            </div>
-
-        </code>
-    </section>
--->
-</section>
-<!--
-<section>
-    <section>
-        <h2>
-            <br>
-        </h2>
-
-        <h2>
-            <br>
-        </h2>
-
-        <h2>LET's talk&nbsp;more&nbsp;</h2>
-
-        <h2>css</h2>
-
-
-    </section>
-    <section>
-        <h2>COMPASS</h2>
-
-        <div>An open-source CSS Authoring Framework<br>
-        </div>
-    </section>
-    <section>
-        <h2>COMPASS</h2>
-
-        <div>Provides SASS mixins for&nbsp;<br>
         </div>
         <div>
             <ul>
-                <li>CSS3</li>
-                <li>layout</li>
-                <li>color mgmt</li>
-                <li>typography<br>
-                </li>
-                <li>math</li>
+                <li>fields are initialized before each feature method</li>
+                <li>shared fiels are initialized once for all feature methods</li>
             </ul>
-
-        </div>
-        <div>
-            <br>
-        </div>
-        <div>
-            And much much more...
-        </div>
-
-
-    </section>
-</section>
-<section>
-    <section>
-        <h2>
-            <br>
-        </h2>
-
-        <h2>
-            <br>
-        </h2>
-
-        <h2>LET's TALK&nbsp;<br>
-        </h2>
-
-        <h2>SOME MORE CSS</h2>
-
-        <div>What?! Again!</div>
-        <div>
-            <br>
         </div>
     </section>
     <section>
-        <h2>
-            <br>
-        </h2>
-
-        <h2>
-            <br>
-        </h2>
-
-        <h2>GRID SYSTEMS<br>
-        </h2>
-    </section>
-    <section>
-        <h2>COMPASS</h2>
-
-        <div>unobtrusive grid system implementations</div>
+        <h2>Fixture Methods</h2>
         <div>
-            <br>
-        </div>
-        <div>Blueprint</div>
-        <div>zen grids</div>
-        <div>Blankwork</div>
-        <div>960.js</div>
-        <div>...</div>
-    </section>
-    <section>
-        <h2>CSS grid systems</h2>
-
-        <div>
-            <img src="http://www.webdesignstuff.co.uk/di101/files/2012/01/picture-4.png">
-            <br>
-        </div>
-    </section>
-    <section>
-        <h2>CSS grid systems</h2>
-
-        <div>Why?</div>
-        <div>
-            <br>
-        </div>
-        <div>Easier to design AND implement</div>
-        <div>
-            <br>
-        </div>
-        <div>Why else?</div>
-        <div>Wasn't that enough?</div>
-    </section>
-    <section>
-        <h2>CSS grid systems</h2>
-
-        <div>What were they called again?</div>
-        <div>
-            <br>
-        </div>
-        <div>Blueprint</div>
-        <div>960.js</div>
-        <div>Blankwork</div>
-        <div>
-            <br>
+<pre>
+    <code class="groovy">def setup() {}          // run before every feature method
+def cleanup() {}        // run after every feature method
+def setupSpec() {}     // run before the first feature method
+def cleanupSpec() {}   // run after the last feature method</code>
+</pre>
         </div>
         <div>
-            <br>
-        </div>
-        <h3>Use one that's usable in SASS!</h3>
-    </section>
-</section>
-<section>
-    <section>
-        <h2>
-            <br>
-        </h2>
-
-        <h2>
-            <br>
-        </h2>
-
-        <h2>LET's TALK<br>HTML5</h2>
-    </section>
-    <section>
-        <h2>HTML5</h2>
-
-        <div>SEMANTIC TAGS</div>
-        <div>
-            <div style="font: inherit;">
-                <br>
-            </div>
-            <div style="font: inherit;">&lt;HEADER&gt;</div>
-            <div style="font: inherit;">&lt;FOOTER&gt;</div>
-        </div>
-        <div style="font: inherit;">
-            <br>
-        </div>
-        <div style="font: inherit;">&lt;NAV&gt;</div>
-        <div style="font: inherit;">
-            <br>
-        </div>
-        <div style="font: inherit;">&lt;ASIDE&gt;</div>
-        <blockquote>USEFUL BUT NOT ESSENTIAL INFORMATION</blockquote>
-        <div>
-            <br>
-        </div>
-    </section>
-    <section>
-        <h2>HTML5</h2>
-
-        <div>SEMANTICS</div>
-        <div>
-            <br>
-        </div>
-        <div>&lt;TIME&gt;</div>
-        <div>
-            <br>
-        </div>
-        <div>&lt;FIGURE&gt;</div>
-        <div>insert image with a caption</div>
-    </section>
-    <section>
-        <h2>HTML5</h2>
-
-        <div>SEMANTICS</div>
-        <div>
-            <br>
-        </div>
-        <div>
-            <div style="font: inherit;">&lt;SECTION&gt;<br>
-            </div>
-            <div style="font: inherit;">A DISTINCT PART OF YOUR PAGE</div>
-            <div style="font: inherit;">
-                <br>
-            </div>
-            <div style="font: inherit;">&lt;ARTICLE&gt;</div>
-            <div style="font: inherit;">FOR BLOGS, NEWS SITES, ...</div>
-        </div>
-    </section>
-    <section>
-        <h2>html5</h2>
-
-        <div>
-            <br>
-        </div>
-        <div>client side validation</div>
-        <div>
-            <br>
-        </div>
-        <div>more attractive forms (css)<br>
-        </div>
-        <div>
-            <br>
-        </div>
-        <div>additional form attributes<br>
             <ul>
-                <li>autofocus</li>
-                <li>placeholder</li>
-                <li>required, pattern</li>
-                <li>...</li>
+                <li>responsible for setting up and cleaning up the environment </li>
+                <li>setupSpec() and cleanupSpec() methods may not reference instance fields</li>
+            </ul>
+        </div>
+    </section>
+    <section>
+        <h2>Feature Methods</h2>
+        <div>
+<pre>
+    <code class="groovy">def "pushing an element on the stack"() {
+  // blocks go here
+}</code>
+</pre>
+        </div>
+        <div>
+            <ul>
+                <li>responsible for setting up and cleaning up the environment </li>
+                <li>setupSpec() and cleanupSpec() methods may not reference instance fields</li>
+            </ul>
+        </div>
+    </section>
+    <section>
+        <h2>blocks</h2>
+        <div>
+            <img src="lib/img/Blocks2Phases.png">
+        </div>
+        <div>
+            <ul>
+                <li>setup</li>
+                <li>given</li>
+                <li>when</li>
+                <li>then</li>
+                <li>cleanup</li>
+            </ul>
+        </div>
+    </section>
+    <section>
+        <h2>basic usage</h2>
+        <div>
+            <pre>
+                <code class="groovy">def "pushing an element on the stack"() {
+  given:
+  def stack = new Stack()
+  def elem = "push me"
+
+  when:
+  stack.push(elem)
+
+  then:
+  !stack.empty
+  stack.size() == 1
+  stack.peek() == elem
+}</code>
+            </pre>
+        </div>
+    </section>
+
+    <section>
+        <h2>expect block</h2>
+        <div>
+            <pre>
+                <code class="groovy">def "test math max"() {
+  when:
+  def x = Math.max(1, 2)
+
+  then:
+  x == 2
+}</code>
+            </pre>
+        </div>
+        <div>
+            <pre>
+                <code class="groovy">def "test math max"() {
+  expect:
+  Math.max(1, 2) == 2
+}</code>
+            </pre>
+        </div>
+    </section>
+
+    <section>
+        <h2>then then then...</h2>
+        <h3>conditions</h3>
+
+        <div>
+            <ul>
+                <li>describe expected state cfr junit assertions</li>
+                <li>each line should contain boolean expression (according to groovy truth)</li>
             </ul>
         </div>
         <div>
-            <br>
+            <pre>
+                <code class="groovy">
+then:
+!stack.empty
+stack.size() == 1
+stack.peek() == elem
+                </code>
+            </pre>
         </div>
-
     </section>
+
     <section>
-        <h2>html5</h2>
+        <h2>then then then...</h2>
+        <h3>exceptions</h3>
 
-        <div>local storage</div>
         <div>
-            <br>
-        </div>
-        <div>replacement for cookies</div>
-        <div>
-            <br>
-        </div>
-        <div>
-            5 MB storage
-            <br>
+            <ul>
+                <li>describe that a when block should throw an exception</li>
+                <li>each line should contain boolean expression (according to groovy truth)</li>
+            </ul>
         </div>
         <div>
+            <pre>
+                <code class="groovy">when:
+stack.pop()
 
-    <pre>
-                    <code>
-localStorage.setItem("usedTheme", "imtech.css")
-
-var theme = localStorage.getItem("usedTheme")
-body.styleSheets[0] = theme
-                    </code>
-                </pre>
+then:
+notThrown(SomeFancyOtherExcpetion)
+def e = thrown(EmptyStackException)
+e.cause == null
+stack.isEmpty()</code>
+            </pre>
         </div>
-
     </section>
-    <section>
-        <h2>html5</h2>
 
-        <div>localstorage</div>
-        <div>
-            <br>
-        </div>
-        <div>The future is bright :)</div>
-        <div>
-            <br>
-        </div>
-        <div>IndexedDb</div>
-        <div>SqlLite</div>
-    </section>
     <section>
-        <h2>html5</h2>
+        <h2>where where where...</h2>
 
         <div>
-            <br>
-        </div>
-        <div>much much much more</div>
-        <div>
-            <br>
-        </div>
-        <div>
-            <br>
+            <ul>
+                <li>describe that a when block should throw an exception</li>
+                <li>each line should contain boolean expression (according to groovy truth)</li>
+            </ul>
         </div>
         <div>
-            <a href="http://www.html5rocks.com/en/">http://www.html5rocks.com/</a>
-            <br>
+            <pre>
+                <code class="groovy">when:
+stack.pop()
+
+then:
+notThrown(SomeFancyOtherExcpetion)
+def e = thrown(EmptyStackException)
+e.cause == null
+stack.isEmpty()</code>
+            </pre>
         </div>
     </section>
 </section>
-<section>
-    <section>
-        <h2>
-            <br>
-        </h2>
-
-        <h2>
-            <br>
-        </h2>
-
-        <h2>let's talk<br>css3</h2>
-    </section>
-    <section>
-        <h2>css3</h2>
-
-        <div>
-            <br>
-        </div>
-        <div>font-face<br>magazine layout (column-count, ...)<br>
-        </div>
-        <div>layout - flexbox</div>
-        <div>multiple backgrounds</div>
-        <div>gradients</div>
-        <div>:after selector</div>
-        <div>effects (transitions)</div>
-        <div>...</div>
-        <div>
-            <br>
-        </div>
-    </section>
-    <section>
-        <h2>css3</h2>
-
-        <div>
-            <br>
-        </div>
-        <div>
-            <a href="http://www.html5rocks.com/en/features/presentation">http://www.html5rocks.com/en/features/presentation</a>
-            <br>
-        </div>
-    </section>
-</section>
-<section>
-    <h2>
-        <br>
-    </h2>
-
-    <h2>older browser?</h2>
-
-    <div>
-        <br>
-    </div>
-    <div>
-        <a href="http://modernizr.com/">http://modernizr.com/</a>
-    </div>
-</section>
-<section>
-    <section>
-        <h2>
-            <br>
-        </h2>
-
-        <h2>
-            <br>
-        </h2>
-
-        <h2>LET'S talk<br>JAVASCRIPT</h2>
-    </section>
-    <section>
-        <h2>javascript</h2>
-
-        <div>
-            <br>
-        </div>
-        <div>you don't always need jQuery</div>
-        <div>
-            <br>
-        </div>
-        <div>Just like css and html, the javascript API has changed!</div>
-    </section>
-    <section>
-        <h2>javascript</h2>
-
-        <div>
-            <br>
-        </div>
-        <div>Javascript too complex and hard to read?</div>
-        <div>
-            <br>
-        </div>
-        <div>Try</div>
-        <div>
-            <img src="http://coffeescript.org/documentation/images/logo.png">
-        </div>
-    </section>
-    <section>
-        <h2>Rich JavaScript Applications</h2>
-        <h3>Model-View-Whatever</h3>
-
-        <div>
-            <table class="gridtable" width="100%">
-            <tbody>
-            <tr>
-            <td>
-                      <strong>Libraries</strong>
-                    </td>
-            <td>
-                      <strong>Frameworks</strong>
-                    </td>
-            </tr>
-            <tr>
-            <td>
-            <p>Backbone</p>
-            <p>Knockout</p>
-            <p>Spine</p>
-            <p>CanJS</p>
-            </td>
-            <td>
-            <p>Ember</p>
-            <p>AngularJS</p>
-            <p>Batman</p>
-            <p>Meteor</p>
-            </td>
-            </tr>
-            </tbody>
-            </table>
-        </div>
-    </section>
-</section>
-<section>
-    <section>
-        <h2 style="">
-        <br>
-        <br>
-    </h2>
-
-    <h2 style="">LET'S TALK <br/>FRONT-END FRAMEWORKS<br>
-    </h2></section>
-
-    <section>
-        <h2>Twitter bootstrap</h2>
-
-        <div>
-            <img src="lib/img/bootstrap.png">
-            <a target="_blank" href="http://twitter.github.com/bootstrap/">Get me there!</a>
-        </div>
-    </section>
-
-    <section>
-        <h2>Foundation 3</h2>
-
-        <div><img src="lib/img/zurb.png">
-            <a target="_blank" href="http://foundation.zurb.com/">Get me there!</a>
-        </div>
-    </section>
-</section>
-<section>
-    <section>
-        <h2 style="">
-        <br>
-        <br>
-    </h2>
-
-    <h2 style="">LET'S TALK<br/>ABOUT READING<br>
-    </h2></section>
-
-    <section>
-        <h2>READ!</h2>
-
-        <div>
-            <a target="_blank" href="http://www.netmagazine.com/">.NET Magazine</a><br/>
-            <a target="_blank" href="http://www.smashingmagazine.com/">Smashing magazine</a><br/>
-            <a target="_blank" href="http://webdesign.tutsplus.com/">Webdesign tuts</a>
-        </div>
-    </section>
-</section>
--->
 <section>
     <h2>Hands-on time</h2>
 </section>
@@ -919,6 +519,9 @@ body.styleSheets[0] = theme
             } },
             { src:'plugin/markdown/markdown.js', condition:function () {
                 return !!document.querySelector('[data-markdown]');
+            } },
+            { src:'plugin/highlight/languages/groovy.js', async:true, condition:function () {
+                return !!document.body.classList;
             } },
             { src:'plugin/highlight/highlight.js', async:true, callback:function () {
                 hljs.initHighlightingOnLoad();
