@@ -53,12 +53,17 @@
     </section>
     <section>
         <div>
+            written by Peter Niederwieser
+        </div>
+    </section>
+    <section>
+        <div>
             unittesting framework providing a DSL in groovy
         </div>
     </section>
     <section>
         <div>
-            written by Peter Niederwieser
+            mocking framework
         </div>
     </section>
     <section>
@@ -92,6 +97,174 @@ class MyFirstSpecification extends Specification {
             </ul>
         </div>
     </section>
+    <section>
+        <h2>Fields</h2>
+        <div>
+<pre>
+    <code>
+def obj = new ClassUnderSpecification()
+@Shared
+def res = new VeryExpensiveResource()
+    </code>
+</pre>
+        </div>
+        <div>
+            <ul>
+                <li>fields are initialized before each feature method</li>
+                <li>shared fiels are initialized once for all feature methods</li>
+            </ul>
+        </div>
+    </section>
+    <section>
+        <h2>Fixture Methods</h2>
+        <div>
+<pre>
+    <code>
+def setup() {}          // run before every feature method
+def cleanup() {}        // run after every feature method
+def setupSpec() {}     // run before the first feature method
+def cleanupSpec() {}   // run after the last feature method
+    </code>
+</pre>
+        </div>
+        <div>
+            <ul>
+                <li>responsible for setting up and cleaning up the environment </li>
+                <li>setupSpec() and cleanupSpec() methods may not reference instance fields</li>
+            </ul>
+        </div>
+    </section>
+    <section>
+        <h2>Feature Methods</h2>
+        <div>
+<pre>
+    <code>
+def "pushing an element on the stack"() {
+  // blocks go here
+}
+    </code>
+</pre>
+        </div>
+        <div>
+            <ul>
+                <li>responsible for setting up and cleaning up the environment </li>
+                <li>setupSpec() and cleanupSpec() methods may not reference instance fields</li>
+            </ul>
+        </div>
+    </section>
+    <section>
+        <h2>blocks</h2>
+        <div>
+            <img src="lib/img/Blocks2Phases.png">
+        </div>
+        <div>
+            <ul>
+                <li>setup</li>
+                <li>given</li>
+                <li>when</li>
+                <li>then</li>
+                <li>cleanup</li>
+            </ul>
+        </div>
+    </section>
+    <section>
+        <h2>basic usage</h2>
+        <div>
+            <pre>
+                <code>
+def "pushing an element on the stack"() {
+  given:
+  def stack = new Stack()
+  def elem = "push me"
+
+  when:
+  stack.push(elem)
+
+  then:
+  !stack.empty
+  stack.size() == 1
+  stack.peek() == elem
+}
+                </code>
+            </pre>
+        </div>
+    </section>
+
+    <section>
+        <h2>expect block</h2>
+        <div>
+            <pre>
+                <code>
+def "test math max"() {
+  when:
+  def x = Math.max(1, 2)
+
+  then:
+  x == 2
+}
+                </code>
+            </pre>
+        </div>
+        <div>
+            <pre>
+                <code>
+def "test math max"() {
+  expect:
+  Math.max(1, 2) == 2
+}
+                </code>
+            </pre>
+        </div>
+    </section>
+
+    <section>
+        <h2>when when when...</h2>
+        <h3>conditions</h3>
+
+        <div>
+            <ul>
+                <li>describe expected state cfr junit assertions</li>
+                <li>each line should contain boolean expression (according to groovy truth)</li>
+            </ul>
+        </div>
+        <div>
+            <pre>
+                <code>
+when:
+!stack.empty
+stack.size() == 1
+stack.peek() == elem
+                </code>
+            </pre>
+        </div>
+    </section>
+
+    <section>
+        <h2>when when when...</h2>
+        <h3>exceptions</h3>
+
+        <div>
+            <ul>
+                <li>describe that a when block should throw an exception</li>
+                <li>each line should contain boolean expression (according to groovy truth)</li>
+            </ul>
+        </div>
+        <div>
+            <pre>
+                <code>
+when:
+stack.pop()
+
+then:
+notThrown(SomeFancyOtherExcpetion)
+def e = thrown(EmptyStackException)
+e.cause == null
+stack.isEmpty()
+                </code>
+            </pre>
+        </div>
+    </section>
+<!--
     <section>
         <h2>USE SASS</h2>
 
@@ -241,6 +414,7 @@ $mainColor: red;
 
         </code>
     </section>
+-->
 </section>
 <!--
 <section>
