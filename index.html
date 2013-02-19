@@ -4,10 +4,10 @@
 <head>
     <meta charset="utf-8">
 
-    <title>Web development for the modern man</title>
+    <title>Unittesting with Spock</title>
 
-    <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
-    <meta name="author" content="Hakim El Hattab">
+    <meta name="description" content="A framework for easily creating unittests using Spockframework">
+    <meta name="author" content="Frederic Pape">
 
     <meta name="apple-mobile-web-app-capable" content="yes"/>
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
@@ -40,51 +40,56 @@
 <div class="slides">
 <section>
     <h2>
-        <font face="helvetica">
-            <br>
-        </font>
+        <font face="helvetica">Unittesting&nbsp;with</font>
     </h2>
 
     <h2>
-        <font face="helvetica">
-            <br>
-        </font>
-    </h2>
-
-    <h2>
-        <font face="helvetica">web development</font>
-    </h2>
-
-    <h2>
-        <font face="helvetica">&nbsp;for&nbsp;</font>
-    </h2>
-
-    <h2>
-        <font face="helvetica">the modern man</font>
-        <br>
+        <font face="helvetica"><strong>Spock</strong></font>
     </h2>
 </section>
 <section>
     <section>
-        <h2>
-            <br>
-        </h2>
-
-        <h2>
-            <br>
-        </h2>
-
-        <h2>LET'S TALK<br>CSS<br>
-        </h2>
-
+        <h2>What is Spock?</h2>
     </section>
     <section>
-        <h2>SASS</h2>
-
-        <div>css pre-compiler</div>
         <div>
-            <br>
-            <img src="http://sass-lang.com/images/sass.gif">
+            unittesting framework providing a DSL in groovy
+        </div>
+    </section>
+    <section>
+        <div>
+            written by Peter Niederwieser
+        </div>
+    </section>
+    <section>
+        <div>
+            Compatible with JUnit: Run specifications with your IDE, build tool, and continuous integration server
+        </div>
+    </section>
+</section>
+<section>
+    <section>
+        <h2>Spocks basics<br>
+        </h2>
+    </section>
+    <section>
+        <h2>Specification</h2>
+        <div>
+<pre>
+    <code>
+class MyFirstSpecification extends Specification {
+  // fields
+  // fixture methods
+  // feature methods
+  // helper methods
+}
+    </code>
+</pre>
+        </div>
+        <div>
+            <ul>
+                <li>if using maven: Rename MyFirstSpecification to MyFirstTest</li>
+            </ul>
         </div>
     </section>
     <section>
@@ -237,6 +242,7 @@ $mainColor: red;
         </code>
     </section>
 </section>
+<!--
 <section>
     <section>
         <h2>
@@ -704,14 +710,9 @@ body.styleSheets[0] = theme
         </div>
     </section>
 </section>
+-->
 <section>
-    <h2 style="">
-        <br>
-        <br>
-    </h2>
-
-    <h2 style="">LET'S TALK<br>
-    </h2>
+    <h2>Hands-on time</h2>
 </section>
 </div>
 
